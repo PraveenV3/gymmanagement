@@ -1,0 +1,9 @@
+<table>
+    <tr><th>ID</th><th>Name</th></tr>
+
+    <tr th:each="m : ${members}">
+        <td th:text="${m.id}"></td>
+        <td th:text="${m.name}"></td>
+    </tr>
+
+</table>
