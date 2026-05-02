@@ -1,9 +1,25 @@
-<table>
-    <tr><th>ID</th><th>Name</th></tr>
-
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Age</th>
+        <th>Plan</th>
+        <th>Username</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
     <tr th:each="m : ${members}">
         <td th:text="${m.id}"></td>
         <td th:text="${m.name}"></td>
+        <td th:text="${m.age}"></td>
+        <td th:text="${m.plan}"></td>
+        <td th:text="${m.username}"></td>
+        <td>
+            <a th:href="@{/edit/{id}(id=${m.id})}" class="btn btn-sm btn-warning">Edit</a>
+            <a th:href="@{/delete/{id}(id=${m.id})}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this member?');">Delete</a>
+        </td>
     </tr>
-
+    </tbody>
 </table>
