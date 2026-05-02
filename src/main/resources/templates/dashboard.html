@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Gym Management</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 48px 40px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            text-align: center;
+        }
+        .card .icon { font-size: 3rem; margin-bottom: 12px; }
+        .card h2 {
+            color: #0f3460;
+            font-size: 1.8rem;
+            margin-bottom: 12px;
+        }
+        .card p {
+            color: #555;
+            font-size: 1rem;
+            margin-bottom: 28px;
+        }
+        .username {
+            font-weight: 700;
+            color: #0f3460;
+        }
+        .btn-logout {
+            display: inline-block;
+            padding: 12px 32px;
+            background: #0f3460;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+        .btn-logout:hover { background: #1a4f8e; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="icon">🏋️</div>
+        <h2>Welcome to Gym Management!</h2>
+        <p>Hello, <span class="username" th:text="${username != null ? username : 'Member'}">Member</span>! You have successfully logged in.</p>
+        <a th:href="@{/login}" class="btn-logout">Logout</a>
+    </div>
+</body>
+</html>
