@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form action="/updateTrainer" method="post">
+
+    <input type="hidden" name="id" th:value="${trainer.id}">
+
+    <input name="name" th:value="${trainer.name}"><br>
+    <input name="specialty" th:value="${trainer.specialty}"><br>
+    <input name="experience" th:value="${trainer.experience}"><br>
+
+    <button type="submit">Update</button>
+
+</form>
+</body>
+</html>
