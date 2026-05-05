@@ -1,0 +1,46 @@
+/* Modern / attractive styles for members page */
+:root{
+  --bg:#f6f8fb;
+  --card:#ffffff;
+  --muted:#6b7280;
+  --accent:#4f46e5; /* indigo */
+  --danger:#ef4444;
+  --success:#10b981;
+}
+
+body{ background:var(--bg); font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif; }
+
+.members-page{ max-width:1100px; margin:28px auto; padding:20px; }
+.members-header{ display:flex; align-items:center; justify-content:space-between; gap:20px; margin-bottom:16px; }
+.members-header h1{ margin:0; font-size:1.6rem; color:#111827; }
+.members-header .actions{ display:flex; align-items:center; gap:12px; }
+.members-header input[type="search"]{ padding:8px 12px; border-radius:8px; border:1px solid #e6e9ef; min-width:220px; background:#fff; box-shadow:0 1px 2px rgba(16,24,40,0.04); }
+
+.table-wrap{ background:linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.8)); border-radius:12px; padding:12px; box-shadow:0 6px 20px rgba(15,23,42,0.06); }
+.members-table{ width:100%; border-collapse:collapse; font-size:0.95rem; }
+.members-table thead th{ text-align:left; padding:12px 14px; color:var(--muted); font-weight:600; font-size:0.85rem; border-bottom:1px solid #eef2f7; }
+.members-table tbody td{ padding:12px 14px; border-bottom:1px solid #f1f5f9; color:#111827; vertical-align:middle; }
+.members-table tbody tr:hover{ background:linear-gradient(90deg, rgba(79,70,229,0.03), rgba(79,70,229,0.01)); }
+
+.actions-cell{ display:flex; gap:8px; }
+.btn{ display:inline-block; padding:6px 10px; border-radius:8px; text-decoration:none; font-size:0.85rem; transition:all .15s ease; }
+.btn-primary{ background:var(--accent); color:#fff; box-shadow:0 6px 18px rgba(79,70,229,0.18); }
+.btn-primary:hover{ transform:translateY(-1px); box-shadow:0 10px 24px rgba(79,70,229,0.22); }
+.btn-edit{ color:#fff; background:#f59e0b; padding:6px 10px; border-radius:8px; }
+.btn-edit:hover{ filter:brightness(.95); }
+.btn-delete{ background:transparent; color:#fff; background:var(--danger); padding:6px 10px; border-radius:8px; }
+.btn-delete:hover{ filter:brightness(.95); }
+
+/* Responsive */
+@media (max-width:760px){
+  .members-header{ flex-direction:column; align-items:flex-start; }
+  .members-header .actions{ width:100%; justify-content:space-between; }
+  .members-table thead{ display:none; }
+  .members-table tbody td{ display:block; width:100%; box-sizing:border-box; }
+  .members-table tbody tr{ margin-bottom:10px; display:block; border-radius:8px; padding:8px; background:var(--card); }
+  .actions-cell{ justify-content:flex-end; }
+}
+
+/* small utility */
+.muted{ color:var(--muted); }
+

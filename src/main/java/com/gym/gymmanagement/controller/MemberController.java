@@ -5,6 +5,7 @@ import com.gym.gymmanagement.service.MemberService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class MemberController {
@@ -34,11 +35,12 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestParam String username, @RequestParam String password) throws Exception {
+    public String login(@RequestParam String username, @RequestParam String password, HttpSession session) throws Exception {
         for (Member m : service.getAllMembers()) {
             if (m.getUsername() != null && m.getUsername().equals(username)
                     && m.getPassword() != null && m.getPassword().equals(password)) {
-                // successful login -> show members
+                // successful login -> store username in session and show members
+                session.setAttribute("username", username);
                 return "redirect:/members";
             }
         }
@@ -47,13 +49,20 @@ public class MemberController {
     }
 
     @GetMapping("/members")
-    public String members(Model model) throws Exception {
+    public String members(Model model, HttpSession session) throws Exception {
+        // only allow access to logged-in users
+        if (session.getAttribute("username") == null) {
+            return "redirect:/login";
+        }
         model.addAttribute("members", service.getAllMembers());
         return "members";
     }
 
     @GetMapping("/edit/{id}")
-    public String editPage(@PathVariable String id, Model model) throws Exception {
+    public String editPage(@PathVariable String id, Model model, HttpSession session) throws Exception {
+        if (session.getAttribute("username") == null) {
+            return "redirect:/login";
+        }
         for (Member m : service.getAllMembers()) {
             if (m.getId() != null && m.getId().equals(id)) {
                 model.addAttribute("member", m);
@@ -64,14 +73,26 @@ public class MemberController {
     }
 
     @PostMapping("/updateMember")
-    public String update(Member member) throws Exception {
+    public String update(Member member, HttpSession session) throws Exception {
+        if (session.getAttribute("username") == null) {
+            return "redirect:/login";
+        }
         service.updateMember(member);
         return "redirect:/members";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable String id) throws Exception {
+    public String delete(@PathVariable String id, HttpSession session) throws Exception {
+        if (session.getAttribute("username") == null) {
+            return "redirect:/login";
+        }
         service.deleteMember(id);
         return "redirect:/members";
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/login";
     }
 }
