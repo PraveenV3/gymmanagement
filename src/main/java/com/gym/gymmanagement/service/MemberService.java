@@ -15,10 +15,31 @@ public class MemberService {
             parent.mkdirs();
         }
         BufferedWriter bw = new BufferedWriter(new FileWriter(file, true));
-        // store: id,name,age,plan,username,password
-        bw.write(member.getId()+","+member.getName()+","+member.getAge()+","+member.getPlan()+","+member.getUsername()+","+member.getPassword());
+        // store: id,name,age,plan,username,password,fullName,dateOfBirth,phoneNumber,emailAddress,gender,nicPassportNumber,address,emergencyContactName,emergencyContactNumber,joinDate,membershipStatus,profilePhotoPath
+        bw.write(member.getId()+","+
+                member.getName()+","+
+                member.getAge()+","+
+                member.getPlan()+","+
+                member.getUsername()+","+
+                member.getPassword()+","+
+                nullToEmpty(member.getFullName())+","+
+                nullToEmpty(member.getDateOfBirth())+","+
+                nullToEmpty(member.getPhoneNumber())+","+
+                nullToEmpty(member.getEmailAddress())+","+
+                nullToEmpty(member.getGender())+","+
+                nullToEmpty(member.getNicPassportNumber())+","+
+                nullToEmpty(member.getAddress())+","+
+                nullToEmpty(member.getEmergencyContactName())+","+
+                nullToEmpty(member.getEmergencyContactNumber())+","+
+                nullToEmpty(member.getJoinDate())+","+
+                nullToEmpty(member.getMembershipStatus())+","+
+                nullToEmpty(member.getProfilePhotoPath()));
         bw.newLine();
         bw.close();
+    }
+
+    private String nullToEmpty(String str) {
+        return str == null ? "" : str;
     }
 
     public List<Member> getAllMembers() throws IOException {
@@ -31,15 +52,40 @@ public class MemberService {
         String line;
         while((line = br.readLine()) != null){
             String[] data = line.split(",");
-            // handle older entries that may not have username/password
-            if (data.length >= 6) {
-                list.add(new Member(data[0],data[1],data[2],data[3],data[4],data[5]));
+            // handle various entry formats
+            Member member = null;
+            if (data.length >= 18) {
+                // new format with all fields
+                member = new Member(data[0],data[1],data[2],data[3],data[4],data[5]);
+                member.setFullName(emptyToNull(data[6]));
+                member.setDateOfBirth(emptyToNull(data[7]));
+                member.setPhoneNumber(emptyToNull(data[8]));
+                member.setEmailAddress(emptyToNull(data[9]));
+                member.setGender(emptyToNull(data[10]));
+                member.setNicPassportNumber(emptyToNull(data[11]));
+                member.setAddress(emptyToNull(data[12]));
+                member.setEmergencyContactName(emptyToNull(data[13]));
+                member.setEmergencyContactNumber(emptyToNull(data[14]));
+                member.setJoinDate(emptyToNull(data[15]));
+                member.setMembershipStatus(emptyToNull(data[16]));
+                member.setProfilePhotoPath(emptyToNull(data[17]));
+            } else if (data.length >= 6) {
+                // old format with just basic fields
+                member = new Member(data[0],data[1],data[2],data[3],data[4],data[5]);
             } else if (data.length == 4) {
-                list.add(new Member(data[0],data[1],data[2],data[3]));
+                // oldest format
+                member = new Member(data[0],data[1],data[2],data[3]);
+            }
+            if (member != null) {
+                list.add(member);
             }
         }
         br.close();
         return list;
+    }
+
+    private String emptyToNull(String str) {
+        return str == null || str.trim().isEmpty() ? null : str;
     }
 
     public void updateMember(Member member) throws IOException {
@@ -51,7 +97,24 @@ public class MemberService {
         while ((line = br.readLine()) != null) {
             String[] data = line.split(",");
             if (data.length > 0 && data[0].equals(member.getId())) {
-                lines.add(member.getId()+","+member.getName()+","+member.getAge()+","+member.getPlan()+","+member.getUsername()+","+member.getPassword());
+                lines.add(member.getId()+","+
+                        member.getName()+","+
+                        member.getAge()+","+
+                        member.getPlan()+","+
+                        member.getUsername()+","+
+                        member.getPassword()+","+
+                        nullToEmpty(member.getFullName())+","+
+                        nullToEmpty(member.getDateOfBirth())+","+
+                        nullToEmpty(member.getPhoneNumber())+","+
+                        nullToEmpty(member.getEmailAddress())+","+
+                        nullToEmpty(member.getGender())+","+
+                        nullToEmpty(member.getNicPassportNumber())+","+
+                        nullToEmpty(member.getAddress())+","+
+                        nullToEmpty(member.getEmergencyContactName())+","+
+                        nullToEmpty(member.getEmergencyContactNumber())+","+
+                        nullToEmpty(member.getJoinDate())+","+
+                        nullToEmpty(member.getMembershipStatus())+","+
+                        nullToEmpty(member.getProfilePhotoPath()));
             } else {
                 lines.add(line);
             }
@@ -87,5 +150,14 @@ public class MemberService {
             // if delete fails, try to overwrite
         }
         temp.renameTo(file);
+    }
+
+    public Member getMemberByUsername(String username) throws IOException {
+        for (Member m : getAllMembers()) {
+            if (m.getUsername() != null && m.getUsername().equals(username)) {
+                return m;
+            }
+        }
+        return null;
     }
 }

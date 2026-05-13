@@ -1,15 +1,187 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Gym System</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+        :root{
+            --accent-1: #06b6d4;
+            --accent-2: #3b82f6;
+            --muted: rgba(255,255,255,0.85);
+        }
+        html,body{height:100%;}
+        body{
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+            margin:0;
+            background:#111;
+        }
+        .hero{
+            min-height:75vh;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            color:var(--muted);
+            background-image: linear-gradient(180deg, rgba(0,0,0,0.45), rgba(0,0,0,0.45)), url('/images/home_bg.jpg');
+            background-size:cover;
+            background-position:center;
+            border-radius:12px;
+            box-shadow: 0 12px 40px rgba(2,6,23,0.6);
+            padding:3rem 1rem;
+        }
+        .hero-card{
+            max-width:1100px;
+            width:100%;
+            display:flex;
+            gap:2rem;
+            align-items:center;
+            justify-content:space-between;
+        }
+        .hero-left{flex:1}
+        .brand-title{
+            font-size:clamp(1.6rem, 4vw, 3.2rem);
+            font-weight:800;
+            letter-spacing:0.6px;
+            margin:0 0 .5rem 0;
+            color:#fff;
+            text-shadow: 0 6px 26px rgba(11,21,47,0.6);
+        }
+        .tagline{color:var(--muted); margin:0 0 1.2rem 0; font-size:1.05rem}
+        .hero-actions{margin-top:1rem}
+        .btn-trainers{
+            background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+            color:#fff;
+            border:none;
+            padding:.65rem 1.2rem;
+            font-weight:700;
+            border-radius:999px;
+            box-shadow:0 8px 30px rgba(59,130,246,0.22);
+            transition: transform .15s ease, box-shadow .15s ease;
+        }
+        .btn-trainers:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(59,130,246,0.24)}
+        .btn-outline-primary{border-radius:999px}
+        .btn-success{border-radius:999px}
+        .btn-info{background:linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%); color:#fff; border-radius:999px; padding:.65rem 1.2rem; font-weight:700; box-shadow:0 8px 30px rgba(99,102,241,0.22); transition: transform .15s ease, box-shadow .15s ease}
+        .btn-info:hover{transform:translateY(-4px); box-shadow:0 18px 40px rgba(99,102,241,0.24); color:#fff}
+        .hero-right{flex:0 0 300px; text-align:right}
+        @media (max-width:768px){
+            .hero-card{flex-direction:column; text-align:center}
+            .hero-right{text-align:center}
+        }
+
+        /* Why Choose Us Section */
+        .why-choose-section{
+            background:#1a1a1a;
+            color:var(--muted);
+            padding:4rem 1rem;
+            margin-top:2rem;
+        }
+        .why-choose-container{max-width:1100px; margin:0 auto}
+        .why-choose-header{text-align:center; margin-bottom:3rem}
+        .why-choose-title{color:#fff; font-size:2rem; font-weight:800; margin-bottom:1rem}
+        .why-choose-intro{color:rgba(255,255,255,0.8); max-width:700px; margin:0 auto; line-height:1.6; font-size:1rem}
+        .why-choose-grid{display:grid; grid-template-columns:repeat(auto-fit, minmax(240px, 1fr)); gap:2rem; margin-top:2rem}
+        .feature-box{
+            background:rgba(255,255,255,0.03);
+            border:1px solid rgba(255,255,255,0.1);
+            border-radius:12px;
+            padding:2rem 1.5rem;
+            text-align:center;
+            transition:all 0.3s ease;
+            box-shadow:0 8px 30px rgba(0,0,0,0.4);
+        }
+        .feature-box:hover{
+            background:rgba(255,255,255,0.05);
+            border-color:rgba(255,255,255,0.2);
+            transform:translateY(-8px);
+            box-shadow:0 12px 40px rgba(0,0,0,0.5);
+        }
+        .feature-icon{
+            font-size:3rem;
+            margin-bottom:1rem;
+            display:block;
+        }
+        .feature-title{
+            color:#ff7a2d;
+            font-weight:700;
+            margin-bottom:0.5rem;
+            font-size:1.1rem;
+        }
+        .feature-subtitle{
+            color:rgba(255,255,255,0.82);
+            font-weight:500;
+            margin:0;
+            font-size:0.96rem;
+            line-height:1.55;
+        }
+        @media (max-width:992px){
+            .why-choose-grid{grid-template-columns:repeat(2, 1fr); gap:1.5rem}
+        }
+        @media (max-width:600px){
+            .why-choose-grid{grid-template-columns:1fr}
+            .why-choose-title{font-size:1.5rem}
+            .why-choose-intro{font-size:0.95rem}
+        }
+    </style>
 </head>
 <body class="container mt-5">
 
-<h1>GYM Management System</h1>
+<section class="hero">
+    <div class="hero-card container">
+        <div class="hero-left">
+            <h1 class="brand-title">Platinum Fitness</h1>
+            <p class="tagline">Strength. Endurance. Community. Personalized plans for your best self.</p>
+            <div class="hero-actions">
+                <a href="/register" class="btn btn-outline-primary me-2">Get Started</a>
+                <a href="/members" class="btn btn-success me-2">View Members</a>
+                <a href="/profile" class="btn btn-info me-2">My Profile</a>
+                <a href="/trainers" class="btn-trainers">View Trainers</a>
+            </div>
+        </div>
+        <div class="hero-right d-none d-md-block">
+            <!-- small accent text or logo area -->
+            <div style="background:rgba(255,255,255,0.06); padding:1rem 1.2rem; border-radius:8px; display:inline-block">
+                <strong style="font-size:1.1rem; color:#fff">Join Today</strong>
+                <div style="font-size:.9rem; color:var(--muted)">Limited-time offers available</div>
+            </div>
+        </div>
+    </div>
+</section>
 
-<a href="/register" class="btn btn-primary">Register Member</a>
-<a href="/members" class="btn btn-success">View Members</a>
+<section class="why-choose-section">
+    <div class="why-choose-container">
+        <div class="why-choose-header">
+            <h2 class="why-choose-title">Why Choose Us?</h2>
+            <p class="why-choose-intro">We combine expert coaching, advanced equipment, flexible membership options, and a clean, secure environment to help you train smarter and reach your goals with confidence.</p>
+        </div>
+
+        <div class="why-choose-grid">
+            <div class="feature-box">
+                <span class="feature-icon">👨‍🏫</span>
+                <div class="feature-title">Certified Trainers</div>
+                <h4 class="feature-subtitle">Professional trainers provide personalized coaching, motivation, and support to help you train the right way.</h4>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-icon">🏋️</span>
+                <div class="feature-title">Smart Equipment</div>
+                <h4 class="feature-subtitle">Advanced workout machines and fitness tools create a modern, effective training experience.</h4>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-icon">💳</span>
+                <div class="feature-title">Flexible Memberships</div>
+                <h4 class="feature-subtitle">Affordable monthly and annual plans make it easy for everyone to stay committed.</h4>
+            </div>
+
+            <div class="feature-box">
+                <span class="feature-icon">🧼</span>
+                <div class="feature-title">Hygiene & Safety</div>
+                <h4 class="feature-subtitle">A clean, sanitized, and secure environment ensures a comfortable workout every day.</h4>
+            </div>
+        </div>
+    </div>
+</section>
 
 </body>
 </html>

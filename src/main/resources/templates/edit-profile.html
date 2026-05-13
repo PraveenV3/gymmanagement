@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Edit Profile - Platinum Fitness</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/edit-profile.css}" />
+</head>
+<body>
+<div class="edit-profile-container">
+    <div class="edit-profile-header">
+        <h1>Edit Profile</h1>
+    </div>
+
+    <div class="edit-profile-card">
+        <form action="/updateProfile" method="post" class="edit-profile-form">
+            <input type="hidden" name="id" th:value="${member.id}" />
+            <input type="hidden" name="name" th:value="${member.name}" />
+            <input type="hidden" name="age" th:value="${member.age}" />
+            <input type="hidden" name="plan" th:value="${member.plan}" />
+            <input type="hidden" name="username" th:value="${member.username}" />
+            <input type="hidden" name="password" th:value="${member.password}" />
+
+            <!-- Profile Photo Section -->
+            <div class="form-section">
+                <h3>Profile Photo</h3>
+                <div class="form-group">
+                    <label for="profilePhotoPath">Profile Photo URL/Path</label>
+                    <input type="text" id="profilePhotoPath" name="profilePhotoPath"
+                           th:value="${member.profilePhotoPath}" placeholder="Enter photo URL or path" class="form-control" />
+                </div>
+            </div>
+
+            <!-- Basic Information -->
+            <div class="form-section">
+                <h3>Basic Information</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input type="text" id="fullName" name="fullName"
+                                   th:value="${member.fullName}" placeholder="Full name" class="form-control" required />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="dateOfBirth">Date of Birth</label>
+                            <input type="date" id="dateOfBirth" name="dateOfBirth"
+                                   th:value="${member.dateOfBirth}" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="gender">Gender</label>
+                            <select id="gender" name="gender" class="form-control">
+                                <option value="">-- Select Gender --</option>
+                                <option value="Male" th:selected="${member.gender == 'Male'}">Male</option>
+                                <option value="Female" th:selected="${member.gender == 'Female'}">Female</option>
+                                <option value="Other" th:selected="${member.gender == 'Other'}">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="phoneNumber">Phone Number</label>
+                            <input type="tel" id="phoneNumber" name="phoneNumber"
+                                   th:value="${member.phoneNumber}" placeholder="Phone number" class="form-control" required />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h3>Contact Information</h3>
+                <div class="form-group">
+                    <label for="emailAddress">Email Address</label>
+                    <input type="email" id="emailAddress" name="emailAddress"
+                           th:value="${member.emailAddress}" placeholder="Email address" class="form-control" required />
+                </div>
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <textarea id="address" name="address" placeholder="Street address" class="form-control" rows="3" th:text="${member.address}"></textarea>
+                </div>
+            </div>
+
+            <!-- Identity Information -->
+            <div class="form-section">
+                <h3>Identity Information</h3>
+                <div class="form-group">
+                    <label for="nicPassportNumber">NIC / Passport Number</label>
+                    <input type="text" id="nicPassportNumber" name="nicPassportNumber"
+                           th:value="${member.nicPassportNumber}" placeholder="NIC or Passport number" class="form-control" />
+                </div>
+            </div>
+
+            <!-- Emergency Contact -->
+            <div class="form-section">
+                <h3>Emergency Contact</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="emergencyContactName">Emergency Contact Name</label>
+                            <input type="text" id="emergencyContactName" name="emergencyContactName"
+                                   th:value="${member.emergencyContactName}" placeholder="Contact name" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="emergencyContactNumber">Emergency Contact Number</label>
+                            <input type="tel" id="emergencyContactNumber" name="emergencyContactNumber"
+                                   th:value="${member.emergencyContactNumber}" placeholder="Contact number" class="form-control" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Membership Information -->
+            <div class="form-section">
+                <h3>Membership Information</h3>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="joinDate">Join Date</label>
+                            <input type="date" id="joinDate" name="joinDate"
+                                   th:value="${member.joinDate}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="membershipStatus">Membership Status</label>
+                            <select id="membershipStatus" name="membershipStatus" class="form-control">
+                                <option value="">-- Select Status --</option>
+                                <option value="Active" th:selected="${member.membershipStatus == 'Active'}">Active</option>
+                                <option value="Expired" th:selected="${member.membershipStatus == 'Expired'}">Expired</option>
+                                <option value="Suspend" th:selected="${member.membershipStatus == 'Suspend'}">Suspend</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Save Changes</button>
+                <a href="/profile" class="btn btn-secondary">Cancel</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
+

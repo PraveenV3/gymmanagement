@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import jakarta.servlet.http.HttpSession;
+import java.util.Random;
 
 @Controller
 public class MemberController {
@@ -24,6 +25,9 @@ public class MemberController {
 
     @PostMapping("/saveMember")
     public String save(Member member) throws Exception {
+        // Auto-generate a 4-digit ID (1000-9999)
+        String generatedId = generateUniqueId();
+        member.setId(generatedId);
         service.saveMember(member);
         // after registration redirect user to login page
         return "redirect:/login";
@@ -94,5 +98,67 @@ public class MemberController {
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
+    }
+
+    @GetMapping("/profile")
+    public String profile(Model model, HttpSession session) throws Exception {
+        // only allow access to logged-in users
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        Member member = service.getMemberByUsername(username);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+        return "profile";
+    }
+
+    @GetMapping("/editProfile")
+    public String editProfile(Model model, HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        Member member = service.getMemberByUsername(username);
+        if (member == null) {
+            return "redirect:/login";
+        }
+        model.addAttribute("member", member);
+        return "edit-profile";
+    }
+
+    @PostMapping("/updateProfile")
+    public String updateProfile(Member member, HttpSession session) throws Exception {
+        String username = (String) session.getAttribute("username");
+        if (username == null) {
+            return "redirect:/login";
+        }
+        service.updateMember(member);
+        return "redirect:/profile";
+    }
+
+    private String generateUniqueId() throws Exception {
+        Random random = new Random();
+        String generatedId;
+        java.util.List<Member> existingMembers = service.getAllMembers();
+        
+        // Generate a unique 4-digit ID (1000-9999)
+        do {
+            int id = 1000 + random.nextInt(9000);
+            generatedId = String.valueOf(id);
+        } while (idExists(generatedId, existingMembers));
+        
+        return generatedId;
+    }
+
+    private boolean idExists(String id, java.util.List<Member> members) {
+        for (Member m : members) {
+            if (m.getId() != null && m.getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
